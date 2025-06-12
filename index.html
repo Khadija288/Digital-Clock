@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegant Digital Clock</title>
+    <title>Dual Theme Digital Clock</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -26,21 +26,30 @@
             transition: background 0.8s ease;
         }
         
-        /* Floating bubbles background */
-        .bubble {
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #f0f0f0;
+        }
+        
+        /* Floating elements background */
+        .floating-element {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(2px);
             z-index: -1;
             animation: float 15s infinite ease-in-out;
         }
         
+        .dark-theme .floating-element {
+            background: rgba(78, 130, 255, 0.05);
+        }
+        
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-20px) translateX(15px); }
-            50% { transform: translateY(10px) translateX(-20px); }
-            75% { transform: translateY(-15px) translateX(-10px); }
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+            25% { transform: translateY(-20px) translateX(15px) rotate(5deg); }
+            50% { transform: translateY(10px) translateX(-20px) rotate(-5deg); }
+            75% { transform: translateY(-15px) translateX(-10px) rotate(3deg); }
         }
         
         .container {
@@ -61,6 +70,13 @@
             transition: all 0.5s ease;
         }
         
+        .dark-theme .container {
+            background: rgba(25, 25, 50, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(255, 255, 255, 0.05),
+                        0 0 50px rgba(78, 130, 255, 0.2);
+        }
+        
         .container::before {
             content: '';
             position: absolute;
@@ -71,6 +87,10 @@
             background: linear-gradient(90deg, #ff7eb3, #ff758c, #ff7eb3);
             animation: gradientBG 8s ease infinite;
             background-size: 300% 300%;
+        }
+        
+        .dark-theme .container::before {
+            background: linear-gradient(90deg, #4e82ff, #ff4ecd, #4effc9);
         }
         
         @keyframes gradientBG {
@@ -87,6 +107,12 @@
             color: #5a67d8;
             text-shadow: 0 2px 4px rgba(90, 103, 216, 0.15);
             letter-spacing: 1px;
+            transition: all 0.5s ease;
+        }
+        
+        .dark-theme .title {
+            color: #e0e0ff;
+            text-shadow: 0 0 10px rgba(78, 130, 255, 0.5);
         }
         
         .clock-container {
@@ -119,10 +145,22 @@
             transform-style: preserve-3d;
         }
         
+        .dark-theme .time-box {
+            background: rgba(15, 20, 40, 0.7);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3),
+                        inset 0 0 15px rgba(0, 0, 0, 0.4),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+        }
+        
         .time-box:hover {
             transform: translateY(-10px) rotateX(5deg);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12),
                         inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+        }
+        
+        .dark-theme .time-box:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
         
         .time-box::before {
@@ -135,6 +173,10 @@
             background: linear-gradient(90deg, #ff7eb3, #ff758c);
         }
         
+        .dark-theme .time-box::before {
+            background: linear-gradient(90deg, #4e82ff, #ff4ecd);
+        }
+        
         .time-value {
             font-family: 'Orbitron', sans-serif;
             font-size: 4rem;
@@ -143,6 +185,11 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             letter-spacing: 3px;
             transition: all 0.3s ease;
+        }
+        
+        .dark-theme .time-value {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(78, 130, 255, 0.7);
         }
         
         .time-label {
@@ -156,6 +203,10 @@
             transition: all 0.3s ease;
         }
         
+        .dark-theme .time-label {
+            color: #a0a0d0;
+        }
+        
         .separator {
             font-family: 'Orbitron', sans-serif;
             font-size: 3.5rem;
@@ -166,6 +217,11 @@
             animation: pulse 2s infinite;
             position: relative;
             top: -10px;
+        }
+        
+        .dark-theme .separator {
+            color: #4e82ff;
+            text-shadow: 0 0 15px rgba(78, 130, 255, 0.8);
         }
         
         @keyframes pulse {
@@ -182,6 +238,11 @@
             font-size: 1.5rem;
             font-weight: 500;
             color: #4a5568;
+            transition: all 0.5s ease;
+        }
+        
+        .dark-theme .date-container {
+            color: #b0b0e0;
         }
         
         .date-item {
@@ -194,9 +255,19 @@
             transition: all 0.3s ease;
         }
         
+        .dark-theme .date-item {
+            background: rgba(15, 20, 40, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+        
         .date-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-theme .date-item:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         }
         
         .date-label {
@@ -205,6 +276,11 @@
             margin-top: 8px;
             text-transform: uppercase;
             letter-spacing: 2px;
+            transition: all 0.5s ease;
+        }
+        
+        .dark-theme .date-label {
+            color: #9090c0;
         }
         
         .theme-toggle {
@@ -232,11 +308,24 @@
                         inset 0 0 0 1px rgba(255, 255, 255, 0.8);
         }
         
+        .dark-theme .theme-btn {
+            background: rgba(15, 20, 40, 0.5);
+            color: #d0d0ff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+        }
+        
         .theme-btn:hover {
             background: rgba(255, 255, 255, 1);
             transform: translateY(-5px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
             color: #ff758c;
+        }
+        
+        .dark-theme .theme-btn:hover {
+            background: rgba(78, 130, 255, 0.2);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(78, 130, 255, 0.3);
         }
         
         .theme-btn i {
@@ -253,6 +342,11 @@
             color: #718096;
             font-family: 'Poppins', sans-serif;
             letter-spacing: 0.5px;
+            transition: all 0.5s ease;
+        }
+        
+        .dark-theme .footer {
+            color: #9090c0;
         }
         
         .footer a {
@@ -261,6 +355,10 @@
             transition: all 0.3s ease;
             font-weight: 600;
             position: relative;
+        }
+        
+        .dark-theme .footer a {
+            color: #4e82ff;
         }
         
         .footer a::after {
@@ -274,8 +372,16 @@
             transition: width 0.3s ease;
         }
         
+        .dark-theme .footer a::after {
+            background: #ff4ecd;
+        }
+        
         .footer a:hover {
             color: #ff758c;
+        }
+        
+        .dark-theme .footer a:hover {
+            color: #ff4ecd;
         }
         
         .footer a:hover::after {
@@ -364,32 +470,11 @@
         }
     </style>
 </head>
-<body>
-    <!-- Generate floating bubbles -->
-    <script>
-        // Generate floating bubbles
-        for (let i = 0; i < 15; i++) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
-            
-            // Random size
-            const size = Math.random() * 120 + 40;
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
-            
-            // Random position
-            bubble.style.left = `${Math.random() * 100}%`;
-            bubble.style.top = `${Math.random() * 100}%`;
-            
-            // Random animation delay
-            bubble.style.animationDelay = `${Math.random() * 15}s`;
-            
-            document.body.appendChild(bubble);
-        }
-    </script>
+<body class="light-theme">
+    <!-- Floating background elements will be generated by JS -->
     
     <div class="container">
-        <h1 class="title">ELEGANT DIGITAL CLOCK</h1>
+        <h1 class="title">DUAL THEME DIGITAL CLOCK</h1>
         
         <div class="clock-container">
             <div class="time-section">
@@ -439,11 +524,41 @@
         </div>
         
         <div class="footer">
-            Created by <a href="https://khadija288.github.io/Digital-Clock/" target="_blank">Khadija288</a> | Redesigned with ❤️
+            Created by <a href="https://khadija288.github.io/Digital-Clock/" target="_blank">Khadija288</a> | Enhanced Design
         </div>
     </div>
 
     <script>
+        // Generate floating background elements
+        function createFloatingElements() {
+            const numElements = 15;
+            const body = document.body;
+            
+            for (let i = 0; i < numElements; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                // Random size
+                const size = Math.random() * 120 + 40;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                
+                // Random position
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                element.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Random shape (some will be circles, some will be squares)
+                if (Math.random() > 0.7) {
+                    element.style.borderRadius = '10px';
+                }
+                
+                body.appendChild(element);
+            }
+        }
+        
         // Update clock function
         function updateClock() {
             const now = new Date();
@@ -476,35 +591,30 @@
             }
         }
         
-        // Initial call
-        updateClock();
-        
-        // Update every second
-        setInterval(updateClock, 1000);
-        
         // Theme switching functionality
-        document.getElementById('theme-light').addEventListener('click', function() {
-            document.body.style.background = 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)';
-            document.querySelector('.container').style.background = 'rgba(255, 255, 255, 0.85)';
-            document.querySelector('.container').style.color = '#333';
-            document.querySelector('.title').style.color = '#5a67d8';
-            document.querySelectorAll('.time-value').forEach(el => el.style.color = '#4a5568');
-            document.querySelectorAll('.time-label').forEach(el => el.style.color = '#718096');
-            document.querySelectorAll('.date-item').forEach(el => el.style.color = '#4a5568');
-            document.querySelector('.footer').style.color = '#718096';
-            document.querySelector('.separator').style.color = '#ff758c';
-        });
+        function setTheme(theme) {
+            document.body.className = theme + '-theme';
+            localStorage.setItem('theme', theme);
+        }
         
-        document.getElementById('theme-dark').addEventListener('click', function() {
-            document.body.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)';
-            document.querySelector('.container').style.background = 'rgba(25, 25, 50, 0.4)';
-            document.querySelector('.container').style.color = '#fff';
-            document.querySelector('.title').style.color = '#e0e0ff';
-            document.querySelectorAll('.time-value').forEach(el => el.style.color = '#fff');
-            document.querySelectorAll('.time-label').forEach(el => el.style.color = '#a0a0d0');
-            document.querySelectorAll('.date-item').forEach(el => el.style.color = '#b0b0e0');
-            document.querySelector('.footer').style.color = '#9090c0';
-            document.querySelector('.separator').style.color = '#4e82ff';
+        // Load saved theme or set default
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+        }
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            createFloatingElements();
+            updateClock();
+            loadTheme();
+            
+            // Update every second
+            setInterval(updateClock, 1000);
+            
+            // Theme switch event listeners
+            document.getElementById('theme-light').addEventListener('click', () => setTheme('light'));
+            document.getElementById('theme-dark').addEventListener('click', () => setTheme('dark'));
         });
     </script>
 </body>
