@@ -1,3 +1,33 @@
+  // Generate floating background elements
+        function createFloatingElements() {
+            const numElements = 15;
+            const body = document.body;
+            
+            for (let i = 0; i < numElements; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                // Random size
+                const size = Math.random() * 120 + 40;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                
+                // Random position
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                element.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Random shape (some will be circles, some will be squares)
+                if (Math.random() > 0.7) {
+                    element.style.borderRadius = '10px';
+                }
+                
+                body.appendChild(element);
+            }
+        }
+        
         // Update clock function
         function updateClock() {
             const now = new Date();
@@ -20,42 +50,38 @@
             document.getElementById('seconds').textContent = seconds;
             document.getElementById('day').textContent = day;
             document.getElementById('date').textContent = date;
+            
+            // Add animation to seconds
+            if(seconds === '00') {
+                document.getElementById('seconds').style.opacity = '0.3';
+                setTimeout(() => {
+                    document.getElementById('seconds').style.opacity = '1';
+                }, 100);
+            }
         }
         
-        // Initial call
-        updateClock();
-        
-        // Update every second
-        setInterval(updateClock, 1000);
-        
         // Theme switching functionality
-        document.getElementById('theme-light').addEventListener('click', function() {
-            document.body.style.background = 'linear-gradient(135deg, #8EC5FC, #E0C3FC)';
-            document.querySelector('.container').style.background = 'rgba(255, 255, 255, 0.8)';
-            document.querySelector('.container').style.color = '#333';
-            document.querySelector('.title').style.color = '#444';
-            document.querySelector('.title').style.textShadow = '0 0 10px rgba(255, 255, 255, 0.7)';
-            document.querySelectorAll('.time-value').forEach(el => {
-                el.style.color = '#333';
-                el.style.textShadow = '0 0 10px rgba(100, 100, 255, 0.5)';
-            });
-            document.querySelectorAll('.time-label').forEach(el => el.style.color = '#555');
-            document.querySelectorAll('.date-item').forEach(el => el.style.color = '#444');
-            document.querySelector('.footer').style.color = '#555';
-        });
+        function setTheme(theme) {
+            document.body.className = theme + '-theme';
+            localStorage.setItem('theme', theme);
+        }
         
-        document.getElementById('theme-dark').addEventListener('click', function() {
-            document.body.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)';
-            document.querySelector('.container').style.background = 'rgba(25, 25, 50, 0.4)';
-            document.querySelector('.container').style.color = '#fff';
-            document.querySelector('.title').style.color = '#e0e0ff';
-            document.querySelector('.title').style.textShadow = '0 0 10px rgba(78, 130, 255, 0.5)';
-            document.querySelectorAll('.time-value').forEach(el => {
-                el.style.color = '#fff';
-                el.style.textShadow = '0 0 10px rgba(78, 130, 255, 0.7)';
-            });
-            document.querySelectorAll('.time-label').forEach(el => el.style.color = '#a0a0d0');
-            document.querySelectorAll('.date-item').forEach(el => el.style.color = '#b0b0e0');
-            document.querySelector('.footer').style.color = '#9090c0';
+        // Load saved theme or set default
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+        }
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            createFloatingElements();
+            updateClock();
+            loadTheme();
+            
+            // Update every second
+            setInterval(updateClock, 1000);
+            
+            // Theme switch event listeners
+            document.getElementById('theme-light').addEventListener('click', () => setTheme('light'));
+            document.getElementById('theme-dark').addEventListener('click', () => setTheme('dark'));
         });
-    
