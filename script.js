@@ -1,43 +1,107 @@
-
+  // Simplified timezone mapping with user-friendly names
+        const timezoneMap = {
+            "Africa/Cairo": "Cairo, Egypt",
+            "America/New_York": "New York, USA",
+            "America/Los_Angeles": "Los Angeles, USA",
+            "Europe/London": "London, UK",
+            "Europe/Paris": "Paris, France",
+            "Asia/Tokyo": "Tokyo, Japan",
+            "Asia/Dubai": "Dubai, UAE",
+            "Asia/Karachi": "Karachi, Pakistan",
+            "Asia/Kolkata": "Kolkata, India",
+            "Asia/Shanghai": "Shanghai, China",
+            "Australia/Sydney": "Sydney, Australia",
+            "Canada/Toronto": "Toronto, Canada",
+            "Brazil/Sao_Paulo": "São Paulo, Brazil",
+            "Africa/Johannesburg": "Johannesburg, South Africa",
+            "Asia/Singapore": "Singapore",
+            "Asia/Bangkok": "Bangkok, Thailand",
+            "Asia/Seoul": "Seoul, South Korea",
+            "Europe/Moscow": "Moscow, Russia",
+            "Europe/Berlin": "Berlin, Germany",
+            "Europe/Rome": "Rome, Italy",
+            "Pacific/Auckland": "Auckland, New Zealand",
+            "Asia/Riyadh": "Riyadh, Saudi Arabia",
+            "Asia/Istanbul": "Istanbul, Turkey",
+            "Asia/Jakarta": "Jakarta, Indonesia",
+            "Asia/Manila": "Manila, Philippines",
+            "Asia/Hong_Kong": "Hong Kong",
+            "Asia/Taipei": "Taipei, Taiwan",
+            "Asia/Dhaka": "Dhaka, Bangladesh"
+        };
+        
+        // Country codes for flags
+        const countryCodes = {
+            "Africa/Cairo": "EG",
+            "America/New_York": "US",
+            "America/Los_Angeles": "US",
+            "Europe/London": "UK",
+            "Europe/Paris": "FR",
+            "Asia/Tokyo": "JP",
+            "Asia/Dubai": "AE",
+            "Asia/Karachi": "PK",
+            "Asia/Kolkata": "IN",
+            "Asia/Shanghai": "CN",
+            "Australia/Sydney": "AU",
+            "Canada/Toronto": "CA",
+            "Brazil/Sao_Paulo": "BR",
+            "Africa/Johannesburg": "ZA",
+            "Asia/Singapore": "SG",
+            "Asia/Bangkok": "TH",
+            "Asia/Seoul": "KR",
+            "Europe/Moscow": "RU",
+            "Europe/Berlin": "DE",
+            "Europe/Rome": "IT",
+            "Pacific/Auckland": "NZ",
+            "Asia/Riyadh": "SA",
+            "Asia/Istanbul": "TR",
+            "Asia/Jakarta": "ID",
+            "Asia/Manila": "PH",
+            "Asia/Hong_Kong": "HK",
+            "Asia/Taipei": "TW",
+            "Asia/Dhaka": "BD"
+        };
+        
         // Get all available timezones
         function getTimezones() {
             try {
-                // Modern browsers support this method
                 return Intl.supportedValuesOf('timeZone');
             } catch (e) {
                 // Fallback for older browsers
-                return [
-                    'UTC', 'GMT', 'EST', 'PST', 'CST', 'MST', 
-                    'Europe/London', 'Europe/Paris', 'Europe/Berlin', 
-                    'Asia/Tokyo', 'Asia/Shanghai', 'Asia/Kolkata', 
-                    'Asia/Karachi', 'Asia/Dubai', 'Australia/Sydney',
-                    'America/New_York', 'America/Los_Angeles', 'America/Chicago',
-                    'America/Toronto', 'America/Vancouver', 'Pacific/Auckland',
-                    'Africa/Cairo', 'Africa/Johannesburg', 'Africa/Lagos'
-                ];
+                return Object.keys(timezoneMap);
             }
         }
         
-        // Populate timezone dropdown
+        // Populate timezone dropdown with simplified names
         function populateTimezones() {
             const timezones = getTimezones();
             const select = document.getElementById('timezone-select');
+            
+            // Get user's local timezone
             const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            let defaultTimezone = "Africa/Cairo";
             
             // Add timezones to dropdown
             timezones.forEach(tz => {
                 const option = document.createElement('option');
                 option.value = tz;
-                option.textContent = tz;
-                if (tz === 'Africa/Cairo') {
-                    option.textContent = 'Africa/Cairo (Egypt)';
-                }
-                if (tz === localTimezone) {
-                    option.selected = true;
-                    document.getElementById('current-timezone').textContent = tz;
-                }
+                
+                // Use simplified name if available, otherwise use the original
+                option.textContent = timezoneMap[tz] || tz.split('/').pop().replace(/_/g, ' ');
+                
                 select.appendChild(option);
+                
+                // Check if this is the user's local timezone
+                if (tz === localTimezone) {
+                    defaultTimezone = tz;
+                }
             });
+            
+            // Set default to user's local timezone
+            select.value = defaultTimezone;
+            updateFlag(defaultTimezone);
+            document.getElementById('current-timezone').textContent = 
+                timezoneMap[defaultTimezone] || defaultTimezone.split('/').pop().replace(/_/g, ' ');
         }
         
         // Format time for a specific timezone
@@ -75,6 +139,32 @@
             };
         }
         
+        // Update flag based on timezone
+        function updateFlag(timezone) {
+            const flag = document.getElementById('selected-flag');
+            const countryCode = countryCodes[timezone];
+            
+            if (countryCode) {
+                flag.textContent = countryCode;
+                
+                // Special flags
+                if (countryCode === 'US') {
+                    flag.style.background = 'linear-gradient(to right, #B22234 33%, white 33%, white 66%, #3C3B6E 66%)';
+                } else if (countryCode === 'UK') {
+                    flag.style.background = 'linear-gradient(to bottom, #012169, #C8102E, #FFFFFF)';
+                } else if (countryCode === 'FR') {
+                    flag.style.background = 'linear-gradient(to right, #002395 33%, white 33%, white 66%, #ED2939 66%)';
+                } else {
+                    // For others, just use a gradient
+                    flag.style.background = 'linear-gradient(135deg, #4e82ff, #ff4ecd)';
+                }
+            } else {
+                // Default styling for unknown countries
+                flag.textContent = timezone.split('/')[0].substring(0, 2).toUpperCase();
+                flag.style.background = 'linear-gradient(135deg, #4e82ff, #ff4ecd)';
+            }
+        }
+        
         // Update clock display
         function updateClock() {
             const timezone = document.getElementById('timezone-select').value;
@@ -85,34 +175,18 @@
             document.getElementById('seconds').textContent = timeData.seconds;
             document.getElementById('day').textContent = timeData.weekday;
             document.getElementById('date').textContent = timeData.date;
-            document.getElementById('current-timezone').textContent = timezone;
             
-            // Update flag based on timezone
-            const flag = document.getElementById('selected-flag');
-            if (timezone.includes('Cairo')) {
-                flag.textContent = 'EG';
-                flag.style.background = '#CE1126';
-            } else if (timezone.includes('New_York')) {
-                flag.textContent = 'US';
-                flag.style.background = 'linear-gradient(to right, #B22234 33%, white 33%, white 66%, #3C3B6E 66%)';
-            } else if (timezone.includes('London')) {
-                flag.textContent = 'UK';
-                flag.style.background = 'linear-gradient(to right, #00247D, white, #CF142B)';
-            } else {
-                flag.textContent = timezone.split('/')[0].substring(0, 2).toUpperCase();
-                flag.style.background = '#4e82ff';
-            }
+            // Update timezone display name
+            document.getElementById('current-timezone').textContent = 
+                timezoneMap[timezone] || timezone.split('/').pop().replace(/_/g, ' ');
+            
+            // Update flag
+            updateFlag(timezone);
         }
         
         // Initial setup
         document.addEventListener('DOMContentLoaded', () => {
             populateTimezones();
-            
-            // Set Egypt as default if available
-            const egyptOption = document.querySelector('option[value="Africa/Cairo"]');
-            if (egyptOption) {
-                egyptOption.selected = true;
-            }
             
             // Initial clock update
             updateClock();
@@ -123,4 +197,3 @@
             // Timezone change event
             document.getElementById('timezone-select').addEventListener('change', updateClock);
         });
-    
