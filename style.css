@@ -1,4 +1,4 @@
- * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -255,21 +255,21 @@
         }
         
         /* Flag display */
-        .flag-container {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            gap: 20px;
-        }
-        
         .flag {
             width: 80px;
             height: 50px;
+            margin: 20px auto;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             background-size: cover;
             background-position: center;
             border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
         }
         
         /* Responsive design */
@@ -340,5 +340,10 @@
             #timezone-select {
                 padding: 12px 40px 12px 15px;
             }
+            
+            .flag {
+                width: 60px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
         }
-        
