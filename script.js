@@ -1,3 +1,22 @@
+   // Generate floating elements
+        for (let i = 0; i < 12; i++) {
+            const element = document.createElement('div');
+            element.classList.add('floating-element');
+            
+            // Random size
+            const size = Math.random() * 120 + 40;
+            element.style.width = `${size}px`;
+            element.style.height = `${size}px`;
+            
+            // Random position
+            element.style.left = `${Math.random() * 100}%`;
+            element.style.top = `${Math.random() * 100}%`;
+            
+            // Random animation delay
+            element.style.animationDelay = `${Math.random() * 15}s`;
+            
+            document.body.appendChild(element);
+        }
   // Simplified timezone mapping with user-friendly names
         const timezoneMap = {
             "Africa/Cairo": "Cairo, Egypt",
